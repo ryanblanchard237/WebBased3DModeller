@@ -156,7 +156,7 @@ function addStuffToArray()
 // (You cannot even build a loop-stop button... because all
 //  other buttons stop responding.)
 
-document.getElementById("loadModelFilesInput").addEventListener("change", updateFilesList, false);
+document.getElementById("chooseModelFilesInput").addEventListener("change", updateFilesList, false);
 function updateFilesList()
 {
     // You can see the files the user picked by doing
@@ -170,12 +170,101 @@ function updateFilesList()
     
 }
 
-function loadModel()
+function loadModelv1()
 {
-    var fileReader = new FileReader();
-    reader.readAsArrayBuffer(fileList[0]);
-    // and now "fileReader.result" has the contents of the file.
+    // It is advised to make sure that your model file follows the right format.
+    // If the load function runs into wrong formatting there's not a clearly defined
+    // behavior for what it will do, more than likely it will be undesirable.
+    
+    vertices = [];
+    
+    const fileReader = new FileReader();
+    if (fileList[0])
+        fileReader.readAsText(fileList[0]);  //and now "fileReader.result" has the contents of the file.
+    else {
+        alert('Choose a file from your device first.');
+        return;
+    }
+    
+    // Example with using an ArrayBuffer.
+    //     var buffer1 = new ArrayBuffer(8);
+    //     var view1 = new Int32Array(buffer);
+    //
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer#examples
+    
+    // If you do it as an ArrayBuffer, to use the result you do something like
+    //    var 
+    
+    // Looking at https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsBinaryString#examples .
+    // Probably why I'm getting a error is that, when I tell the FileReader to start reading the file,
+    // there acutually is some time before it fijnishes reading it and the result is ready.
+    // So you have to set up an event so that you don't *do things with* the result,
+    // until the FileReader has indicated that it's done reading the file.
+    //
+    //var leftCommaIndex = -1;
+    //var rightCommaIndex;
+    //while (true) {
+    //    rightCommaIndex = fileReader.result.indexOf(',', leftCommaIndex + 1);
+    //    
+    //    if (rightCommaIndex == -1)
+    //        break;
+    //    
+    //    var valueAsString = fileReader.result.slice(leftCommaIndex + 1, rightCommaIndex);
+    //    var value = Number(valueAsString);
+    //    // Could error-check here if desired.
+    //    vertices = vertices.concat(value);
+    //    
+    //    leftCommaIndex = rightCommaIndex;
+    //}
+    //
+    //vertexCount = Math.floor(vertices.length / 3);
+    //gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
 }
+
+function loadModelv2()
+{
+    // It is advised to make sure that your model file follows the right format.
+    // If the load function runs into wrong formatting there's not a clearly defined
+    // behavior for what it will do, more than likely it will be undesirable.
+    
+    vertices = [];
+    
+    const fileReader = new FileReader();
+    
+    fileReader.onload = () =>
+    {
+        var leftCommaIndex = -1;
+        var rightCommaIndex;
+        
+        while (true)
+        {
+            rightCommaIndex = fileReader.result.indexOf(',', leftCommaIndex + 1);
+            
+            if (rightCommaIndex == -1)
+                break;
+            
+            var valueAsString = fileReader.result.slice(leftCommaIndex + 1, rightCommaIndex);
+            var value = Number(valueAsString);
+            // Could error-check here if desired.
+            vertices = vertices.concat(value);
+            
+            leftCommaIndex = rightCommaIndex;
+        }
+        
+        vertexCount = Math.floor(vertices.length / 3);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
+    }
+    
+    
+    if (fileList[0])
+        fileReader.readAsText(fileList[0]);  //and now "fileReader.result" has the contents of the file.
+    else {
+        alert('Choose a file from your device first.');
+        return;
+    }
+}
+
+
 
 
 function setFragmentColor()
