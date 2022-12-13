@@ -1,0 +1,68 @@
+<!-- HTML for my version -->
+<!DOCTYPE html>
+<html>
+    <head>
+		<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js" integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ==" crossorigin="anonymous"></script>
+	    <script defer type="text/javascript" src="TryCameraRotation.js"></script>
+		<link rel="stylesheet" href="styles.css"/>
+	</head>
+	<body>
+	    <canvas id="webglCanvas1" width="640" height="480"></canvas><br><br>
+		
+        
+        <h3>Add triangle.</h3><br>
+        
+        <span>Specify 3 points.</span><br>
+		<span>(3 comma-separated values in each text box (each point is 3D).)</span><br>
+        <input type="text" id="vertex1Textbox"></input><br>
+		<input type="text" id="vertex2Textbox"></input><br>
+		<input type="text" id="vertex3Textbox"></input>
+		<button id="addTriangleButton" onclick="addTriangle()">Add triangle</button><br>
+        <br>
+        
+        <span>Add a point (or points) straight to the vertex array.</span><br>
+        <input type="text" id="addStuffTextbox"></input>
+        <button id="addStuffButton" onclick="addStuffToArray()">Add to list of points</button><br>
+        <br>
+        
+        <label for="chooseModelFilesInput">Load model file</label>
+        <input type="file" id="chooseModelFilesInput"><br>
+        <button id="loadModelFileButton" onclick="loadModelv2()">Go</button><br>
+		<br>
+        
+        
+        <h3>Set fragment color</h3><br>
+        <input type="text" id="setFragmentColorTextbox">
+        <button id="setFragmentColorButton" onclick="setFragmentColor()">Apply</button>
+        <br><br>
+		
+		<h3>Set camera position</h3><br>
+		<span>(Whatever you enter in this text box... those values are *added to* (or subtracted from) whatever the previous position was.</span><br>
+		<input type="text" id="setCameraPositionTextbox"></input>
+		<button id="setCameraPositionButton" onclick="setCameraPosition()">Submit</button><br><br>
+        
+        <h3>Do some camera rotation</h3><br>
+        <span>Radian amount to rotate. (Type = Number) </span> <input id="rotationRadiansTextbox" type="text"></input><br>
+        <span>Axis to rotate around. Type = Vec3. </span> <input id="rotationAxisTextbox" type="text"></input><br>
+        <span>These also are added to whatever the previous rotation was.</span>
+        <button onclick="setCameraRotation()">Apply</button><br><br>
+        
+        <!--
+        <h3>Testing checkbox</h3>
+        <input type="checkbox" id="checkbox1"><br>
+        <br>
+        -->
+        
+		<button id="updateSceneButton" onclick="drawScene()">Update scene</button><br>
+        <button id="resetTrianglesButton" onclick="resetTriangles()">Reset triangles.</button><br>
+        <button id="resetCameraButton" onclick="resetCamera()">Reset camera</button><br>
+        <button id="logVertices" onclick="logVerticesSimpler()">Log vertices</button><br>
+        <br>
+        
+        <button id="saveCurrentModel" onclick="saveModel()">Save the current model to a local file</button><br>
+        <span>Name for the file - </span>
+        <input type="text" id="saveModelFilenameInput"></input>
+        
+	</body>
+    
+</html>
